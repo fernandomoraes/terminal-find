@@ -1,16 +1,43 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-import sys
-import webbrowser
+import cmd
+import webbrowser as browser
 
-google = "https://www.google.com.br/?gws_rd=cr&ei=IWfLUsnIMcrSsASoiYGIAQ#q="
-youtube = "http://www.youtube.com/results?search_query="
-url = ""
+class WebFinder(cmd.Cmd):
+	"""Faster way to search the web."""
 
-if sys.argv[1] == "google":
-	url = google+sys.argv[2]
-else:
-	url = youtube+sys.argv[2]
+	def do_google(self, line):
+		print "google searching..."
+		Providers().search_google(line)
+		return True
 
-webbrowser.open(url)
-sys.exit()
+	def do_twitter(self, line):
+		print "twitter searching..."
+		Providers().search_twitter(line)
+		return True
+
+	def do_youtube(self, line):
+		print "youtube searching..."
+		Providers().search_youtube(line)
+		return True
+
+	def do_eof(self, line):
+		return True
+
+class Providers():
+	GOOGLE = "https://www.google.com/?gws_rd=cr&ei=IWfLUsnIMcrSsASoiYGIAQ#q="
+	TWITTER = "https://twitter.com/search?q="
+	YOUTUBE = "http://www.youtube.com/results?search_query="
+
+	def search_google(self, search):
+		browser.open(Providers().GOOGLE+search)
+
+	def search_twitter(self, search):
+		browser.open(Providers().TWITTER+search)
+
+	def search_youtube(self, search):
+		browser.open(Providers().YOUTUBE+search)
+
+if __name__ == '__main__':
+	WebFinder().cmdloop()
